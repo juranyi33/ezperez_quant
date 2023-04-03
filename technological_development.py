@@ -35,8 +35,8 @@ fig.add_trace(
 
 # fig.show()
 
-#separate 3 periods, constant in the begging, linear1 between 1940-55, linear2 between 1956-2022
-year_masks = {0: (df_usa['Year'] < 1940), 1: (df_usa['Year'] >= 1940) & (df_usa['Year'] <= 1955),
+#separate 3 periods, constant in the begging until 1936, linear1 between 1937-55, linear2 between 1956-2022
+year_masks = {0: (df_usa['Year'] < 1937), 1: (df_usa['Year'] >= 1937) & (df_usa['Year'] <= 1955),
               2: (df_usa['Year'] > 1955)}
 # split the data into three parts: constant, linear1, linear2
 linear_data1 = df_usa[year_masks[1]].reset_index(drop=True)
@@ -66,15 +66,15 @@ tech_dev = np.concatenate([constant_0, trend_1, trend_2])
 data = pd.Series(tech_dev, index=df_usa['Year'])
 
 #compare the trends with the moving average of USA corn yield
-fig.add_trace(
-    go.Scatter(x=df_usa['Year'], y=tech_dev, name="trend"),
-    secondary_y=False,
-)
-
-#devide the yield by the trend to get a "trend-free" output
 # fig.add_trace(
-#     go.Scatter(x=df_usa['Year'], y=df_usa['yield_us']/tech_dev, name="trend"),
+#     go.Scatter(x=df_usa['Year'], y=tech_dev, name="trend"),
 #     secondary_y=False,
 # )
+
+#devide the yield by the trend to get a "trend-free" output
+fig.add_trace(
+    go.Scatter(x=df_usa['Year'], y=df_usa['yield_us']/tech_dev, name="trend"),
+    secondary_y=False,
+)
 
 fig.show()
